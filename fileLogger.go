@@ -75,8 +75,7 @@ type FileLogger struct {
 
 // NewDefaultLogger return a logger split by fileSize by default
 func NewDefaultLogger(fileDir, fileName string) *FileLogger {
-	return NewSizeLogger(fileDir, fileName, "",
-		DEFAULT_FILE_COUNT, DEFAULT_FILE_SIZE, DEFAULT_FILE_UNIT, DEFAULT_LOG_SCAN, DEFAULT_LOG_SEQ)
+	return NewDailyLogger(fileDir, fileName, "", DEFAULT_LOG_SEQ, false)
 }
 
 // NewSizeLogger return a logger split by fileSize
@@ -89,7 +88,7 @@ func NewDefaultLogger(fileDir, fileName string) *FileLogger {
 // 		unit stands for kb, mb, gb, tb
 //		logScan after a logScan time will check fileLogger isMustSplit, default is 300s
 func NewSizeLogger(fileDir, fileName, prefix string, fileCount int, fileSize int64, unit UNIT,
-	logScan int64, logSeq int) *FileLogger {
+	logSeq int, console bool) *FileLogger {
 	sizeLogger := &FileLogger{
 		splitType:  SplitType_Size,
 		mu:         new(sync.RWMutex),
@@ -98,10 +97,10 @@ func NewSizeLogger(fileDir, fileName, prefix string, fileCount int, fileSize int
 		fileCount:  fileCount,
 		fileSize:   fileSize * int64(unit),
 		prefix:     prefix,
-		logScan:    logScan,
+		logScan:    DEFAULT_LOG_SCAN,
 		logChan:    make(chan string, logSeq),
 		logLevel:   DEFAULT_LOG_LEVEL,
-		logConsole: false,
+		logConsole: console,
 	}
 
 	sizeLogger.initLogger()
@@ -114,17 +113,17 @@ func NewSizeLogger(fileDir, fileName, prefix string, fileCount int, fileSize int
 // 		file directory
 // 		file name
 // 		log's prefix
-func NewDailyLogger(fileDir, fileName, prefix string, logScan int64, logSeq int) *FileLogger {
+func NewDailyLogger(fileDir, fileName, prefix string, logSeq int, console bool) *FileLogger {
 	dailyLogger := &FileLogger{
 		splitType:  SplitType_Daily,
 		mu:         new(sync.RWMutex),
 		fileDir:    fileDir,
 		fileName:   fileName,
 		prefix:     prefix,
-		logScan:    logScan,
+		logScan:    DEFAULT_LOG_SCAN,
 		logChan:    make(chan string, logSeq),
 		logLevel:   DEFAULT_LOG_LEVEL,
-		logConsole: false,
+		logConsole: console,
 	}
 
 	dailyLogger.initLogger()
