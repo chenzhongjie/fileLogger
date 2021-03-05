@@ -145,55 +145,57 @@ func (f *FileLogger) initLogger() {
 
 // init filelogger split by fileSize
 func (f *FileLogger) initLoggerBySize() {
-
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	logFile := joinFilePath(f.fileDir, f.fileName)
-	for i := 1; i <= f.fileCount; i++ {
-		if !isExist(logFile + "." + strconv.Itoa(i)) {
-			break
+	if !f.logConsole {
+		logFile := joinFilePath(f.fileDir, f.fileName)
+		for i := 1; i <= f.fileCount; i++ {
+			if !isExist(logFile + "." + strconv.Itoa(i)) {
+				break
+			}
+
+			f.suffix = i
 		}
 
-		f.suffix = i
-	}
-
-	if !f.isMustSplit() {
-		if !isExist(f.fileDir) {
-			os.Mkdir(f.fileDir, 0755)
+		if !f.isMustSplit() {
+			if !isExist(f.fileDir) {
+				os.Mkdir(f.fileDir, 0755)
+			}
+			f.logFile, _ = os.OpenFile(logFile, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+			f.lg = log.New(f.logFile, f.prefix, log.LstdFlags|log.Lmicroseconds)
+		} else {
+			f.split()
 		}
-		f.logFile, _ = os.OpenFile(logFile, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
-		f.lg = log.New(f.logFile, f.prefix, log.LstdFlags|log.Lmicroseconds)
-	} else {
-		f.split()
+		go f.fileMonitor()
 	}
 
 	go f.logWriter()
-	go f.fileMonitor()
 }
 
 // init fileLogger split by daily
 func (f *FileLogger) initLoggerByDaily() {
-
 	t, _ := time.Parse(DATEFORMAT, time.Now().Format(DATEFORMAT))
 
 	f.date = &t
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	logFile := joinFilePath(f.fileDir, f.fileName)
-	if !f.isMustSplit() {
-		if !isExist(f.fileDir) {
-			os.Mkdir(f.fileDir, 0755)
+	if !f.logConsole {
+		logFile := joinFilePath(f.fileDir, f.fileName)
+		if !f.isMustSplit() {
+			if !isExist(f.fileDir) {
+				os.Mkdir(f.fileDir, 0755)
+			}
+			f.logFile, _ = os.OpenFile(logFile, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+			f.lg = log.New(f.logFile, f.prefix, log.LstdFlags|log.Lmicroseconds)
+		} else {
+			f.split()
 		}
-		f.logFile, _ = os.OpenFile(logFile, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
-		f.lg = log.New(f.logFile, f.prefix, log.LstdFlags|log.Lmicroseconds)
-	} else {
-		f.split()
+		go f.fileMonitor()
 	}
 
 	go f.logWriter()
-	go f.fileMonitor()
 }
 
 // used for determine the fileLogger f is time to split.
