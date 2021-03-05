@@ -74,8 +74,8 @@ type FileLogger struct {
 }
 
 // NewDefaultLogger return a logger split by fileSize by default
-func NewDefaultLogger(fileDir, fileName string) *FileLogger {
-	return NewDailyLogger(fileDir, fileName, "", DEFAULT_LOG_SEQ, false)
+func NewDefaultLogger(fileDir, fileName string, console bool) *FileLogger {
+	return NewDailyLogger(fileDir, fileName, "", DEFAULT_LOG_SEQ, console)
 }
 
 // NewSizeLogger return a logger split by fileSize
