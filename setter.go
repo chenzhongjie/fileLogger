@@ -37,7 +37,7 @@ func (f *FileLogger) SetLogScanInterval(interval int) {
 	//TODO How to change logScan Interval when ticker is running
 }
 
-// SetLogLevel sets the output log's Level: TRACE<INFO<WARN<ERROR<OFF
+// SetLogLevel sets the output log's Level: Debug<INFO<WARN<ERROR<OFF
 func (f *FileLogger) SetLogLevel(level LEVEL) {
 	f.logLevel = level
 }

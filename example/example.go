@@ -25,7 +25,7 @@ func init() {
 	WARN = fileLogger.NewDefaultLogger("/usr/local/aiwuTech/log", "warn.log")
 	ERROR = fileLogger.NewDefaultLogger("/usr/local/aiwuTech/log", "error.log")
 
-	TRACE.SetPrefix("[TRACE] ")
+	TRACE.SetPrefix("[Debug] ")
 	INFO.SetPrefix("[INFO] ")
 	WARN.SetPrefix("[WARN] ")
 	ERROR.SetPrefix("[ERROR] ")
@@ -64,7 +64,7 @@ func main() {
 
 func traceTest(wg *sync.WaitGroup) {
 	for i := 1; i <= 1000; i++ {
-		TRACE.Printf("This is the No[%v] TRACE log using fileLogger that written by aiwuTech.", i)
+		TRACE.Printf("This is the No[%v] Debug log using fileLogger that written by aiwuTech.", i)
 	}
 
 	wg.Done()
@@ -97,7 +97,7 @@ func errorTest(wg *sync.WaitGroup) {
 func logTest(wg *sync.WaitGroup) {
 
 	for i := 1; i <= 1000; i++ {
-		logFile.T("This is the No[%v] TRACE log using fileLogger that written by aiwuTech.", i)
+		logFile.T("This is the No[%v] Debug log using fileLogger that written by aiwuTech.", i)
 		logFile.I("This is the No[%v] INFO log using fileLogger that written by aiwuTech.", i)
 		logFile.W("This is the No[%v] WARN log using fileLogger that written by aiwuTech.", i)
 		logFile.E("This is the No[%v] ERROR log using fileLogger that written by aiwuTech.", i)

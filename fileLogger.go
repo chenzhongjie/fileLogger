@@ -20,7 +20,7 @@ const (
 	DEFAULT_FILE_UNIT  = MB
 	DEFAULT_LOG_SCAN   = 300
 	DEFAULT_LOG_SEQ    = 5000
-	DEFAULT_LOG_LEVEL  = TRACE
+	DEFAULT_LOG_LEVEL  = Debug
 )
 
 type UNIT int64
@@ -43,7 +43,7 @@ const (
 type LEVEL byte
 
 const (
-	TRACE LEVEL = iota
+	Debug LEVEL = iota
 	INFO
 	WARN
 	ERROR
