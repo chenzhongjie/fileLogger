@@ -43,19 +43,20 @@ func (f *FileLogger) p(str string) {
 	f.mu.RLock()
 	defer f.mu.RUnlock()
 
+	if f.logConsole {
+		f.pc(str)
+		return
+	}
 	f.lg.Output(2, str)
-	f.pc(str)
 }
 
 // print log in console, default log string wont be print in console
 // NOTICE: when console is on, the process will really slowly
 func (f *FileLogger) pc(str string) {
-	if f.logConsole {
-		if log.Prefix() != f.prefix {
-			log.SetPrefix(f.prefix)
-		}
-		log.Println(str)
+	if log.Prefix() != f.prefix {
+		log.SetPrefix(f.prefix)
 	}
+	log.Println(str)
 }
 
 // Printf throw logstr to channel to print to the logger.
