@@ -83,52 +83,56 @@ func (f *FileLogger) Println(v ...interface{}) {
 //======================================================================================================================
 // Debug log
 func (f *FileLogger) Debug(format string, v ...interface{}) {
-	_, file, line, _ := runtime.Caller(2) //calldepth=3
+	_, file, line, _ := runtime.Caller(1) //calldepth=3
 	if f.logLevel <= Debug {
-		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) + fmt.Sprintf("\033[32m[Debug]\033[0m "+format, v...)
+		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) +
+			fmt.Sprintf("\033[32m[Debug]\033[0m "+format, v...)
 	}
 }
 
 // same with Debug()
-func (f *FileLogger) D(format string, v ...interface{}) {
-	f.Debug(format, v...)
-}
+//func (f *FileLogger) D(format string, v ...interface{}) {
+//	f.Debug(format, v...)
+//}
 
 // info log
 func (f *FileLogger) Info(format string, v ...interface{}) {
-	_, file, line, _ := runtime.Caller(2) //calldepth=3
+	_, file, line, _ := runtime.Caller(1) //calldepth=3
 	if f.logLevel <= INFO {
-		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) + fmt.Sprintf("\033[1;35m[INFO]\033[0m "+format, v...)
+		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) +
+			fmt.Sprintf("\033[1;35m[INFO]\033[0m "+format, v...)
 	}
 }
 
 // same with Info()
-func (f *FileLogger) I(format string, v ...interface{}) {
-	f.Info(format, v...)
-}
+//func (f *FileLogger) I(format string, v ...interface{}) {
+//	f.Info(format, v...)
+//}
 
 // warning log
 func (f *FileLogger) Warn(format string, v ...interface{}) {
-	_, file, line, _ := runtime.Caller(2) //calldepth=3
+	_, file, line, _ := runtime.Caller(1) //calldepth=3
 	if f.logLevel <= WARN {
-		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) + fmt.Sprintf("\033[1;33m[WARN]\033[0m "+format, v...)
+		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) +
+			fmt.Sprintf("\033[1;33m[WARN]\033[0m "+format, v...)
 	}
 }
 
 // same with Warn()
-func (f *FileLogger) W(format string, v ...interface{}) {
-	f.Warn(format, v...)
-}
+//func (f *FileLogger) W(format string, v ...interface{}) {
+//	f.Warn(format, v...)
+//}
 
 // error log
 func (f *FileLogger) Error(format string, v ...interface{}) {
-	_, file, line, _ := runtime.Caller(2) //calldepth=3
+	_, file, line, _ := runtime.Caller(1) //calldepth=3
 	if f.logLevel <= ERROR {
-		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) + fmt.Sprintf("\033[1;4;31m[ERROR]\033[0m "+format, v...)
+		f.logChan <- fmt.Sprintf("[%v:%v]", shortFileName(file), line) +
+			fmt.Sprintf("\033[1;4;31m[ERROR]\033[0m "+format, v...)
 	}
 }
 
 // same with Error()
-func (f *FileLogger) E(format string, v ...interface{}) {
-	f.Error(format, v...)
-}
+//func (f *FileLogger) E(format string, v ...interface{}) {
+//	f.Error(format, v...)
+//}
